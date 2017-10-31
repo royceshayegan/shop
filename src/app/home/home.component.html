@@ -1,0 +1,40 @@
+<!--<p>
+  home works!
+</p>
+
+<a routerLink="login" routerLinkActive="active">Login</a>
+
+<ul>
+  <li *ngFor="let product of products | async">
+      
+    ID: {{ product.id }}<br>Name: {{ product.name }}<br>Description: {{ product.description }}<br>Price: {{ product.price }}<br>
+    <button (click)="onSelect(product)" [class.selected]="product === selectedProduct">Select</button>
+    <br>
+    <form editProductForm="ngForm">
+  
+        <input [(ngModel)]="product.name" name="name" placeholder="name">
+        <input [(ngModel)]="product.description" name="description" placeholder="description">
+        <input [(ngModel)]="product.price" name="price" placeholder="price">
+      
+    <button (click)="saveProduct(product)">Save</button>
+    <button (click)="deleteProduct(product.id)">Delete</button>
+  </form>
+  </li>
+</ul>
+
+
+
+<form>
+<input #name placeholder="name">
+<input #description placeholder="description">
+<input #price placeholder="price">
+
+
+<button (click)="addProduct(name.value, description.value, price.value)">Add Product</button>
+
+
+</form>-->
+
+<product-list>
+
+</product-list>
