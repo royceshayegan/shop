@@ -8,54 +8,37 @@ import 'rxjs/add/operator/switchMap'
 @Injectable()
 export class ProductService {
 
-  selectedProduct: Product;
   productsCollection: AngularFirestoreCollection<Product>;
   productDoc: AngularFirestoreDocument<Product>; 
+  products: Observable<Product[]>;
 
-  constructor(private afs: AngularFirestore) {
-
-    this.productsCollection = afs.collection<Product>('products');
-
+  constructor(public afs: AngularFirestore) {
+    this.productsCollection = this.afs.collection('products');
+    this.products = this.productsCollection.snapshotChanges().map(changes => {
+      return changes.map(a => {
+        const data = a.payload.doc.data() as Product;
+        data.id = a.payload.doc.id;
+        return data;
+      });
+    });
    }
 
-  getData(): Observable<Product[]> {
-    return this.productsCollection.valueChanges();
+  getProducts() {
+    return this.products;
   }
 
-
-
-  getSnapshot() {
-    // ['added', 'modified', 'removed']
-    return this.productsCollection.snapshotChanges().map(actions => {
-      return actions.map(a => {
-        return { id: a.payload.doc.id, ...a.payload.doc.data() }
-      })
-    })
-  }
-  
-  getProduct(id) {
-    return this.afs.doc<Product>('products/' + id);
-  }
-
-  getProductData(selectedId) {
-    return this.afs.doc<Product>('products/' + selectedId).valueChanges();
-  }
-
-  createProduct(name, description, price) {
-    const product: Product = { name, description, price };
-    return this.productsCollection.add(product);
+  addProduct(product: Product) {
+    this.productsCollection.add(product);
   }
 
   updateProduct(product: Product) {
-    return this.getProduct(product.id).update(product)
+    this.productDoc = this.afs.doc(`products/${product.id}`);
+    this.productDoc.update(product);
   }
 
-  deleteProduct(id) {
-    return this.getProduct(id).delete()
-  }
-
-  getAll() {
-    return this.afs.doc<Product>('products');
+  deleteProduct(product: Product) {
+    this.productDoc = this.afs.doc(`products/${product.id}`);
+    this.productDoc.delete();
   }
 
 }

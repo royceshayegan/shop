@@ -1,24 +1,33 @@
 <h1>Products</h1>
-
-<input [(ngModel)]="name" placeholder="Product Name" class="input">
-<input [(ngModel)]="description" placeholder="Product Description" class="input">
-<input [(ngModel)]="price" placeholder="Product Price" class="input">
-
-
-<button (click)="createProduct()">
-  Add Product
-</button>
+<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+<input [(ngModel)]="product.name" name="name" placeholder="Product Name" class="input">
+<input [(ngModel)]="product.description" name="description" placeholder="Product Description" class="input">
+<input [(ngModel)]="product.price" name="price" placeholder="Product Price" class="input">
+<input type="submit" value="Submit">
+</form>
 <hr>
-<div *ngFor="let product of products | async" style="padding: 20px;">
-    ID: {{ product.id }}<br>Name: {{ product.name }}<br>Description: {{ product.description }}<br>Price: {{ product.price }}<br>
-
-    <input [(ngModel)]="product.name" name="name" placeholder="name">
-    <input [(ngModel)]="product.description" name="description" placeholder="description">
-    <input [(ngModel)]="product.price" name="price" placeholder="price">
-    <br>
-    <button [class.selected]="product.id === selectedId" [routerLink]="['/product-detail', product.id]">Edit</button>
-    <button (click)="deleteProduct(product.id)">Delete</button>
-
-    <product-detail [product]="product"></product-detail>
-  
+<div *ngIf="!loading && products?.length > 0;">
+  <ul>
+    <li *ngFor="let product of products" style="padding: 20px;">
+        ID: {{ product.id }}<br>Name: {{ product.name }}<br>Description: {{ product.description }}<br>Price: {{ product.price }}<br>
+        <mat-icon *ngIf="editState == false" (click)="editProduct($event, product)">edit</mat-icon>
+        <mat-icon *ngIf="editState == true" (click)="clearState()">expand_less</mat-icon>
+      <div *ngIf="editState && productToEdit.id == product.id">
+        <form (ngSubmit)="updateProduct(product)">
+          <input [(ngModel)]="product.name" name="name" placeholder="name">
+          <input [(ngModel)]="product.description" name="description" placeholder="description">
+          <input [(ngModel)]="product.price" name="price" placeholder="price">
+          <input type="submit" value="Save">
+        </form>
+      </div>
+        <br>
+        <button (click)="deleteProduct(product)">Delete</button>
+    </li>
+  </ul>
+</div>
+<div *ngIf="!loading && products?.length === 0;">
+  No products to list.
+</div>
+<div *ngIf="loading == true">
+  <mat-progress-spinner diameter="50" strokeWidth="5" mode="indeterminate"></mat-progress-spinner>
 </div>

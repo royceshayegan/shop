@@ -16,6 +16,7 @@ export class ProductDetailComponent implements OnInit {
   @Input()
   
   product;
+  products;
   productDoc;
   name;
   description;
@@ -27,11 +28,19 @@ export class ProductDetailComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit() {
-    this.route.paramMap
-    .subscribe((params: ParamMap) => {
-      this.selectedId = params.get('id');
-      this.productDoc = this.productService.getProduct(this.selectedId)
-    });
+    // this.route.paramMap
+    // .subscribe((params: ParamMap) => {
+    //   this.selectedId = params.get('id');
+    //   this.product = this.productService.getProduct(this.selectedId).valueChanges()
+    // });
+  }
+
+  updateProduct(product) {
+    this.productService.updateProduct(product);
+  }
+
+  deleteProduct(id) {
+    this.productService.deleteProduct(id);
   }
 
 }

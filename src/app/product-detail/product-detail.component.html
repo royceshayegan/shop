@@ -1,4 +1,15 @@
 
 <h1>product detail</h1>
 
-    ID: {{ product.id }}<br>Name: {{ product.name }}<br>Description: {{ product.description }}<br>Price: {{ product.price }}<br>
+    <ng-container *ngIf="product | async as product">
+
+     ID: {{ product.id }}<br>Name: {{ product.name }}<br>Description: {{ product.description }}<br>Price: {{ product.price }}<br>
+
+    <input [(ngModel)]="product.name" name="name" placeholder="name">
+    <input [(ngModel)]="product.description" name="description" placeholder="description">
+    <input [(ngModel)]="product.price" name="price" placeholder="price">
+    <br>
+    <button (click)="updateProduct(product)">Edit</button>
+    <button (click)="deleteProduct(product.id)">Delete</button>
+
+    </ng-container>

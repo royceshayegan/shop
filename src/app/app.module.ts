@@ -4,6 +4,9 @@ import { AngularFireModule } from 'angularfire2';
 import { CoreModule } from './core/core.module';
 import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+import {MatButtonModule, MatCheckboxModule, MatIconModule, MatProgressSpinnerModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -18,6 +21,7 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductService } from './product.service';
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductsComponent } from './products/products.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
     CreateProductComponent,
     ProductListComponent,
     ProductEditComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +43,12 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
     CoreModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]

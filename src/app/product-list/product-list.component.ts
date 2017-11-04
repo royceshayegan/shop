@@ -11,36 +11,55 @@ import 'rxjs/add/operator/switchMap';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  @Input()
-  product;
-  products;
-  name;
-  description;
-  price;
+  @Input()p
+
+  products: Product[];
+  product: Product = {
+    name: '',
+    description: '',
+    price: ''
+  }
+
+  editState: boolean = false;
+  productToEdit: Product;
+  loading: boolean = true;
+
+
 
   private selectedId: any;
 
   constructor(private router: Router, private productService: ProductService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.products = this.productService.getSnapshot();
-    // this.route.paramMap
-    // .subscribe((params: ParamMap) => {
-    //   this.selectedId = params.get('id');
-    //   this.products = this.productService.getSnapshot();
-    // });
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
+      this.loading = false;
+    });
   }
 
-  createProduct() {
-    this.productService.createProduct(this.name, this. description, this.price);
+  onSubmit(f) {
+    this.productService.addProduct(this.product);
+    f.resetForm();
   }
 
-  updateProduct(product) {
+  editProduct(event, product: Product) {
+    this.editState = true;
+    this.productToEdit = product;
+  }
+
+  clearState() {
+    this.editState = false;
+    this.productToEdit = null;
+  }
+
+  updateProduct(product: Product) {
     this.productService.updateProduct(product);
+    this.clearState();
   }
 
-  deleteProduct(id) {
-    this.productService.deleteProduct(id);
+  deleteProduct(product: Product) {
+    this.productService.deleteProduct(product); 
+    this.clearState();
   }
 
 }
